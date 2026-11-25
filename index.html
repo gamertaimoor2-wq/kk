@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Happy Birthday Hemakshi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#12060c;color:#fff}
+body{font-family:'DM Sans',system-ui,sans-serif}
+
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#12060c}
+.bg-mesh{
+  position:absolute;inset:-50%;width:200%;height:200%;
+  background:
+    radial-gradient(ellipse 55% 45% at 20% 25%,rgba(255,60,110,.3) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 80% 30%,rgba(255,100,150,.22) 0%,transparent 50%),
+    radial-gradient(ellipse 45% 40% at 50% 80%,rgba(220,40,90,.2) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 35% at 15% 70%,rgba(255,80,130,.14) 0%,transparent 50%);
+  animation:mesh 16s ease-in-out infinite alternate;
+}
+@keyframes mesh{0%{transform:translate(0,0) scale(1)}100%{transform:translate(3%,-2%) scale(1.05)}}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;animation:float 10s ease-in-out infinite}
+.blob:nth-child(1){width:300px;height:300px;background:radial-gradient(circle,rgba(255,70,120,.55),transparent 70%);top:8%;left:8%}
+.blob:nth-child(2){width:240px;height:240px;background:radial-gradient(circle,rgba(255,120,160,.4),transparent 70%);top:55%;right:5%;animation-delay:-3s;animation-duration:12s}
+.blob:nth-child(3){width:180px;height:180px;background:radial-gradient(circle,rgba(255,90,140,.4),transparent 70%);bottom:12%;left:40%;animation-delay:-6s;animation-duration:9s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.1)}}
+#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,#12060cdd 100%)}
+
+.glass{
+  position:relative;border-radius:24px;overflow:hidden;isolation:isolate;
+  background:linear-gradient(145deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.04) 50%,rgba(255,80,120,.06) 100%);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 0 1px rgba(255,120,150,.12),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(255,255,255,.06);
+}
+.glass::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:42%;
+  background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.06) 50%,transparent);
+  pointer-events:none;z-index:0;border-radius:24px 24px 0 0;
+}
+.glass>*{position:relative;z-index:1}
+
+#start{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;transition:opacity .55s,visibility .55s;
+}
+#start.hide{opacity:0;visibility:hidden;pointer-events:none}
+#start .emoji{font-size:3.2rem;margin-bottom:14px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+#start h1{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2rem,9vw,3.2rem);text-align:center;line-height:1.05;
+  background:linear-gradient(180deg,#fff,#ffb3c8 50%,#ff4d7a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+#start .sub{color:#ffb3c8;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;margin-bottom:26px}
+#startBtn{
+  appearance:none;border:none;cursor:pointer;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;
+  padding:16px 42px;border-radius:999px;color:#1a050c;
+  background:linear-gradient(135deg,#ffd0dc,#ff6b9d 50%,#e04070);
+  box-shadow:0 0 0 1px rgba(255,255,255,.25),0 12px 40px rgba(255,70,120,.5),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:pulse 2s ease-in-out infinite;min-width:190px;
+}
+#startBtn:active{transform:scale(.96)}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(255,255,255,.25),0 12px 40px rgba(255,70,120,.5)}
+  50%{box-shadow:0 0 0 1px rgba(255,255,255,.4),0 12px 55px rgba(255,70,120,.75),0 0 70px rgba(255,70,120,.35)}
+}
+
+.app{position:relative;z-index:10;height:100%;display:flex;align-items:center;justify-content:center;padding:12px;opacity:0;pointer-events:none;transition:opacity .5s}
+.app.show{opacity:1;pointer-events:auto}
+
+.rail{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;gap:4px;padding:10px 12px;opacity:0;transition:opacity .4s}
+.rail.show{opacity:1}
+.rail i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.rail i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff4d7a,#ff8aad);border-radius:2px;box-shadow:0 0 8px #ff4d7a}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:48px 14px 96px;opacity:0;visibility:hidden;pointer-events:none;
+}
+.slide.on{opacity:1;visibility:visible;pointer-events:auto}
+
+.card{
+  width:min(380px,94vw);
+  padding:20px 16px 18px;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+  max-height:min(82vh,640px);
+}
+
+.shot{
+  width:100%;
+  max-width:260px;
+  aspect-ratio:3/4;
+  border-radius:18px;
+  overflow:hidden;
+  margin:0 auto 12px;
+  box-shadow:0 12px 36px rgba(255,60,100,.25),0 0 0 1px rgba(255,255,255,.15);
+  background:#1a0a10;
+}
+.shot img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center top;
+  display:block;
+}
+
+.kicker{font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#ff8aad;margin-bottom:8px}
+.hero{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.45rem,6.2vw,2.1rem);line-height:1.08;letter-spacing:-.02em;
+  background:linear-gradient(180deg,#fff 10%,#ffc0d0 55%,#ff4d7a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:1.05rem;color:#ffb3c8;margin-bottom:8px}
+.line{font-size:clamp(.95rem,3vw,1.08rem);line-height:1.6;color:rgba(255,255,255,.9);max-width:300px;margin:0 auto}
+.emoji{font-size:2.2rem;margin-bottom:8px}
+
+.cta-wrap{position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:0;right:0;z-index:40;display:flex;justify-content:center;pointer-events:none}
+.cta{
+  appearance:none;border:none;cursor:pointer;pointer-events:auto;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;
+  padding:13px 30px;border-radius:999px;color:#1a050c;
+  background:linear-gradient(135deg,#ffd0dc,#ff6b9d 50%,#e04070);
+  box-shadow:0 0 0 1px rgba(255,255,255,.2),0 10px 32px rgba(255,70,120,.45),inset 0 1px 0 rgba(255,255,255,.35);
+  min-width:170px;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.cta.show{opacity:1;pointer-events:auto}
+.cta:active{transform:scale(.96)}
+
+.mus{
+  position:fixed;bottom:max(18px,env(safe-area-inset-bottom));right:12px;z-index:50;
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,70,120,.22);backdrop-filter:blur(12px);
+  color:#fff;font-size:1.05rem;display:grid;place-items:center;cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.mus.show{opacity:1;pointer-events:auto}
+.mus.off{opacity:.4}
+
+#boom{position:fixed;inset:0;z-index:80;pointer-events:none}
+
+@media(min-width:700px){
+  .card{width:min(420px,90vw);padding:26px 22px}
+  .shot{max-width:280px}
+  .hero{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="bg-mesh"></div>
+  <div class="blob"></div><div class="blob"></div><div class="blob"></div>
+</div>
+<canvas id="fx"></canvas>
+<div class="vig"></div>
+<canvas id="boom"></canvas>
+
+<div id="start">
+  <div class="emoji">🎂</div>
+  <h1>Happy Birthday<br>Hemakshi</h1>
+  <p class="sub">a little something for your day</p>
+  <button id="startBtn">Open this 🎉</button>
+</div>
+
+<audio id="bgm" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c6ff1ebb.mp3?filename=happy-birthday-to-you-piano-version-13976.mp3" type="audio/mpeg"/>
+  <source src="bg.mp3" type="audio/mpeg"/>
+</audio>
+<button class="mus off" id="mus">♪</button>
+
+<div class="rail" id="rail"></div>
+
+<div class="app" id="app">
+  <!-- 0 intro -->
+  <section class="slide on" data-i="0">
+    <div class="card glass">
+      <div class="emoji">🎉</div>
+      <div class="kicker">happy birthday</div>
+      <h1 class="hero">Hemakshi</h1>
+      <p class="serif">glad we met</p>
+      <p class="line">wishing you the softest kind of day</p>
+    </div>
+  </section>
+
+  <!-- 1 pic1 + long life -->
+  <section class="slide" data-i="1">
+    <div class="card glass">
+      <div class="shot"><img src="images/pic1.png" alt="Hemakshi" loading="eager"/></div>
+      <p class="line">May God bless you with a long life</p>
+    </div>
+  </section>
+
+  <!-- 2 pic2 + always happy -->
+  <section class="slide" data-i="2">
+    <div class="card glass">
+      <div class="shot"><img src="images/pic2.png" alt="Hemakshi" loading="eager"/></div>
+      <p class="line">May you always be happy</p>
+    </div>
+  </section>
+
+  <!-- 3 pic3 + deserve happiness -->
+  <section class="slide" data-i="3">
+    <div class="card glass">
+      <div class="shot"><img src="images/pic3.png" alt="Hemakshi" loading="eager"/></div>
+      <p class="line">You deserve all the happiness of the world</p>
+    </div>
+  </section>
+
+  <!-- 4 finale -->
+  <section class="slide" data-i="4">
+    <div class="card glass">
+      <div class="emoji">🎂💗</div>
+      <h1 class="hero">Happy Birthday<br>Hemakshi</h1>
+      <p class="serif">enjoy your day</p>
+      <p class="line">
+        give yourself princess treatment<br>
+        always · no exceptions<br><br>
+        and later… maybe the same energy for me too  :>
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="cta-wrap">
+  <button class="cta" id="cta">Tap to continue</button>
+</div>
+
+<script>
+const start=document.getElementById('start');
+const startBtn=document.getElementById('startBtn');
+const app=document.getElementById('app');
+const rail=document.getElementById('rail');
+const cta=document.getElementById('cta');
+const mus=document.getElementById('mus');
+const audio=document.getElementById('bgm');
+audio.volume=.42;
+
+const slides=[...document.querySelectorAll('.slide')];
+slides.forEach(()=>{const i=document.createElement('i');i.innerHTML='<b></b>';rail.appendChild(i)});
+const bars=[...rail.querySelectorAll('b')];
+let idx=0,busy=false;
+
+startBtn.onclick=()=>{
+  audio.play().then(()=>mus.classList.remove('off')).catch(()=>{});
+  start.classList.add('hide');
+  app.classList.add('show');
+  rail.classList.add('show');
+  mus.classList.add('show');
+  cta.classList.add('show');
+  setRail(0);
+};
+
+mus.onclick=()=>{
+  if(audio.paused){audio.play();mus.classList.remove('off')}
+  else{audio.pause();mus.classList.add('off')}
+};
+
+function setRail(n){
+  bars.forEach((b,i)=>{
+    gsap.killTweensOf(b);
+    if(i<n)gsap.set(b,{width:'100%'});
+    else if(i===n)gsap.fromTo(b,{width:'0%'},{width:'100%',duration:4,ease:'none'});
+    else gsap.set(b,{width:'0%'});
+  });
+}
+
+function go(n){
+  if(busy||n===idx||n<0||n>=slides.length)return;
+  busy=true;
+  const prev=slides[idx],next=slides[n],dir=n>idx?1:-1;
+  gsap.to(prev,{opacity:0,y:dir*-18,duration:.3,ease:'power2.in',onComplete:()=>{prev.classList.remove('on');gsap.set(prev,{y:0})}});
+  next.classList.add('on');
+  gsap.fromTo(next,{opacity:0,y:dir*22},{opacity:1,y:0,duration:.4,ease:'power3.out',delay:.07,onComplete:()=>{busy=false}});
+  const kids=next.querySelectorAll('.kicker,.hero,.serif,.line,.emoji,.shot');
+  gsap.fromTo(kids,{opacity:0,y:10},{opacity:1,y:0,duration:.38,stagger:.05,delay:.12,ease:'power2.out'});
+  idx=n;setRail(n);
+  if(n===4){cta.classList.remove('show');explode()}
+  else{cta.classList.add('show');cta.textContent='Tap to continue'}
+}
+
+cta.onclick=()=>{if(idx<4)go(idx+1)};
+document.addEventListener('keydown',e=>{
+  if((e.key==='ArrowRight'||e.key===' ')&&idx<4){e.preventDefault();go(idx+1)}
+  if(e.key==='ArrowLeft'&&idx>0)go(idx-1);
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-tx;
+  if(dx<-50&&idx<4)go(idx+1);
+  if(dx>50&&idx>0)go(idx-1);
+},{passive:true});
+
+const fx=document.getElementById('fx'),ctx=fx.getContext('2d');
+let W,H,parts=[];
+function resize(){W=fx.width=innerWidth;H=fx.height=innerHeight}
+resize();addEventListener('resize',resize);
+function spawn(){
+  parts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.7,vy:(Math.random()-.5)*.7,r:Math.random()*1.8+.3,a:Math.random()*.5+.2,life:1,decay:.0025+Math.random()*.003});
+}
+for(let i=0;i<40;i++)spawn();
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  if(parts.length<70)spawn();
+  for(let i=parts.length-1;i>=0;i--){
+    const p=parts[i];p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;
+    if(p.life<=0){parts.splice(i,1);continue}
+    ctx.beginPath();
+    ctx.fillStyle=`rgba(255,120,160,${p.a*p.life})`;
+    ctx.shadowBlur=10;ctx.shadowColor='rgba(255,80,130,.55)';
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  }
+  requestAnimationFrame(draw);
+})();
+
+const boom=document.getElementById('boom'),bctx=boom.getContext('2d');
+function explode(){
+  boom.width=innerWidth;boom.height=innerHeight;
+  const bits=[],colors=['#ff4d7a','#ff8aad','#fff','#ffc0d0','#e04070','#ff6b9d'];
+  for(let i=0;i<110;i++)bits.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*12,vy:(Math.random()-.7)*11,r:Math.random()*3.5+1.5,c:colors[i%colors.length],a:1,rot:Math.random()*360,vr:(Math.random()-.5)*8});
+  let f=0;
+  (function tick(){
+    bctx.clearRect(0,0,boom.width,boom.height);
+    bits.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.16;p.a-=.012;p.rot+=p.vr;bctx.save();bctx.translate(p.x,p.y);bctx.rotate(p.rot*Math.PI/180);bctx.fillStyle=p.c;bctx.globalAlpha=Math.max(p.a,0);bctx.fillRect(-p.r,-p.r,p.r*2,p.r*2);bctx.restore()});
+    if(++f<90)requestAnimationFrame(tick);else bctx.clearRect(0,0,boom.width,boom.height);
+  })();
+}
+</script>
+</body>
+</html>
